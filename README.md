@@ -63,7 +63,7 @@ The analysis followed a typical Business Intelligence workflow:
 4. ** Dimensional and Fact Table queries**
    ***Create_tables.sql // populate_dimensions.sql***
  -----------------LOCATION TABLE------------------
-   
+```  
 CREATE TABLE dim_location (
     postal_code NVARCHAR(255),
     city NVARCHAR(255),
@@ -78,9 +78,10 @@ SELECT DISTINCT
     region,
     country
 FROM [ACE DATA];
+```
 
 ------- PRODUCT TABLE-------
-
+```
 CREATE TABLE dim_product (
     product_id NVARCHAR(255) PRIMARY KEY,
     product_name NVARCHAR(255),
@@ -95,10 +96,10 @@ SELECT DISTINCT
     category,
     sub_category
 FROM [ACE DATA];
-
+```
 
 --------------ORDER MODE--------------------
-
+```
 CREATE TABLE dim_order_mode (
     order_Id NVARCHAR(255) PRIMARY KEY,
 	order_mode NVARCHAR(255)
@@ -109,10 +110,10 @@ SELECT DISTINCT
     order_mode,
 	order_id
 FROM [ACE DATA];
-
+```
 
 ----------------ORDER DATE--------
-
+```
 CREATE TABLE dim_date (
     order_date DATE PRIMARY KEY,
     year INT,
@@ -129,11 +130,11 @@ SELECT DISTINCT
     DAY(order_date) AS day,
     DATEPART(QUARTER, order_date) AS quarter
 FROM [ACE DATA];
-
+```
 
  ***Populate_fact_table.sql***
 ------------FACT TABLE------------
-
+```
 CREATE TABLE fact_Sales (
     order_id NVARCHAR(255) PRIMARY KEY,
     product_id NVARCHAR(255),
@@ -167,8 +168,9 @@ SELECT
 FROM[ACE DATA];
 
 ***Create_views.sql***
+```
 --------------------------Product Seasonality-------------------
-
+```
 CREATE VIEW vw_product_seasonality AS
 SELECT 
     dp.product_id,
@@ -182,9 +184,10 @@ FROM fact_sales fs
 JOIN dim_product dp ON fs.product_id = dp.product_id
 JOIN dim_date dd ON fs.order_date = dd.order_date
 GROUP BY dp.product_id, dp.product_name, dd.year, dd.month;
+```
 
 -----------------------------------Discount Impact Analysis-------------------
-
+```
 CREATE VIEW vw_discount_impact_analysis AS
 SELECT
     dp.product_id,
@@ -196,10 +199,10 @@ SELECT
 FROM fact_sales fs
 JOIN dim_product dp ON fs.product_id = dp.product_id
 GROUP BY dp.product_id, dp.product_name;
-
+```
 
 --------------------------Channel Margin Report------------------
-
+```
 CREATE VIEW vw_channel_margin_report AS
 SELECT
     dom.order_mode AS Order_mode,
@@ -210,10 +213,10 @@ SELECT
 FROM fact_sales fs
 JOIN dim_order_mode dom ON fs.order_mode = dom.order_mode
 GROUP BY dom.order_mode;
-
+```
 
 ----------------Region Category Rrankings------------
-
+```
 CREATE VIEW vw_region_category_rankings AS
 SELECT
     dl.region,
@@ -224,12 +227,12 @@ FROM fact_sales fs
 JOIN dim_product dp ON fs.product_id = dp.product_id
 JOIN dim_location dl ON fs.postal_code = dl.postal_code AND fs.city = dl.city
 GROUP BY dl.region, dp.category;
-
-----------------------------OTHER VIEWS-----
+```
+***OTHER VIEWS***
 
 ------------Total profit & Total sales by product category and region--
 
-
+```
 SELECT
     dl.region,
     dp.category,
@@ -244,12 +247,11 @@ ORDER BY dl.region, profit_margin DESC;
 ****Insight****
 - This Shows how each product category performs in different regions. 
 - Helps the business decide where to promote certain categories and identify underperforming regions for specific products.
-
-
+```
 
 
 ------------------------Monthly profit trends (time series insight
-
+```
 SELECT
     dd.year,
     dd.month,
@@ -264,10 +266,10 @@ ORDER BY dd.year, dd.month;
 - Tracks profit and sales over months and years.
 - Reveals seasonality patterns to plan inventory, staffing,
 - Helps in targeting marketing campaigns during peak or slow periods.
-
+```
 
 -------------------------Profit Margin % by Order Channel
-
+```
 SELECT
     dom.order_mode AS Order_Channel,
     SUM(fs.profit_margin) / NULLIF(SUM(fs.Total_Sales), 0) AS Profit_Margin,
@@ -280,9 +282,9 @@ GROUP BY dom.order_mode;
 - Compares profitability between online and in-store sales.
 - Helps strategic decision-making: where to invest more resources
 - optimize operations, or adjust pricing and marketing.
-
+```
 ----------------------------------Discount Percentage vs profit by product
-
+```
 SELECT
     dp.product_name,
     SUM(fs.total_discount) / NULLIF(SUM(fs.Total_Sales), 0) AS Discount_Rate,
@@ -296,9 +298,9 @@ ORDER BY Discount_Rate DESC
 - Evaluates how much discounting impacts profit by product.
 - Helps identify products where aggressive discounts might reduce
 - Profit margins, so marketing or pricing strategies can be refined.
-
+```
 -------------------------Average Profit Margin by Category and Region
-
+```
 SELECT
     dl.region,
     dp.category,
@@ -310,7 +312,7 @@ JOIN dim_product dp ON fs.product_id = dp.product_id
 JOIN dim_location dl ON fs.postal_code = dl.postal_code and fs.city= dl.city
 GROUP BY dl.region, dp.category
 ORDER BY dl.region, Avg_Profit_Margin DESC;
-
+```
 ****Insight****
 - Shows how profitable each category is in each region.
 - Helps decide which categories to promote, discontinue,
