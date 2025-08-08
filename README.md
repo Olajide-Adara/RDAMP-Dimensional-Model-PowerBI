@@ -1,5 +1,4 @@
-# RDAMP-Dimensional-Model-PowerBI
-# RDAMP-Sales-Analysis
+# ACE Sales Analysis
 
 ## 1. Exexutive Summary
 
