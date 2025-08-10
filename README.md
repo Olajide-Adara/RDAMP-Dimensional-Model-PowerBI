@@ -2,7 +2,7 @@
 
 ## 1. Exexutive Summary
 
-This project presents a business intelligence report for **ACE SUPERSTORE**, a nationwide retail chain that has experienced significant sales growth over the past two years. As ACE prepares for strategic expansion into additional regions and aims to optimize its current operations, senior leadership requires a consolidated view of key sales performance trends.
+This project presents a business intelligence report for **ACE SUPERSTORE**, a retail chain that has experienced significant sales growth over the past two years. As ACE prepares for strategic expansion into additional regions and aims to optimize its current operations, senior leadership requires a consolidated view of key sales performance trends.
 
 My role as a Data Analyst was to perform an initial data exploration and create a comprehensive report that answers foundational business questions using the provided sales dataset.
 
